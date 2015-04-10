@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<talendfile:ProcessType xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:talendfile="platform:/resource/org.talend.model/model/TalendFile.xsd" defaultContext="Default">
+  <context confirmationNeeded="false" name="Default">
+    <contextParameter comment="" name="months_back" prompt="months_back?" promptNeeded="false" type="id_String" value="&quot;13&quot;"/>
+    <contextParameter comment="" name="months_back_sum" prompt="months_back_sum?" promptNeeded="false" type="id_String" value="&quot;13&quot;"/>
+    <contextParameter comment="" name="Req_Row_Limit" prompt="Req_Row_Limit?" promptNeeded="false" type="id_String" value="&quot;50000&quot;"/>
+  </context>
+  <parameters>
+    <elementParameter field="TEXT" name="JOB_RUN_VM_ARGUMENTS" value=" -Xms256M -Xmx1024M"/>
+    <elementParameter field="CHECK" name="JOB_RUN_VM_ARGUMENTS_OPTION" value="false"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_X" value="32"/>
+    <elementParameter field="TEXT" name="SCREEN_OFFSET_Y" value="0"/>
+    <elementParameter field="TEXT" name="SCHEMA_OPTIONS" value="none"/>
+    <elementParameter field="TEXT" name="OEM_CUSTOM_ATTRIBUTE" value=""/>
+    <elementParameter field="TEXT" name="HADOOP_APP_PATH" value=""/>
+    <elementParameter field="TEXT" name="JOBID_FOR_OOZIE" value=""/>
+    <elementParameter field="TEXT" name="REPOSITORY_CONNECTION_ID" value=""/>
+    <elementParameter field="TABLE" name="HADOOP_ADVANCED_PROPERTIES"/>
+    <elementParameter field="CHECK" name="IMPLICITCONTEXT_USE_PROJECT_SETTINGS" value="true"/>
+    <elementParameter field="CHECK" name="STATANDLOG_USE_PROJECT_SETTINGS" value="true"/>
+    <elementParameter field="CHECK" name="MULTI_THREAD_EXECATION" value="false"/>
+    <elementParameter field="FILE" name="IMPLICIT_TCONTEXTLOAD_FILE" value="&quot;&quot;"/>
+    <elementParameter field="TEXT" name="FIELDSEPARATOR" value="&quot;&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION_IMPLICIT_CONTEXT" value=""/>
+    <elementParameter field="CLOSED_LIST" name="LOAD_NEW_VARIABLE" value=""/>
+    <elementParameter field="CLOSED_LIST" name="NOT_LOAD_OLD_VARIABLE" value=""/>
+    <elementParameter field="CHECK" name="DISABLE_WARNINGS" value="false"/>
+    <elementParameter field="CHECK" name="DISABLE_INFO" value="false"/>
+    <elementParameter field="DIRECTORY" name="FILE_PATH" value="&quot;C:/Talend/5.5.1/studio/workspace/.metadata&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="ORACLE_10"/>
+    <routinesParameter id="_jf1QwKuOEeGBNrIDUTtnAQ" name="DataOperation"/>
+    <routinesParameter id="_jgR8sKuOEeGBNrIDUTtnAQ" name="Mathematical"/>
+    <routinesParameter id="_jgbtsKuOEeGBNrIDUTtnAQ" name="Numeric"/>
+    <routinesParameter id="_jigxU6uOEeGBNrIDUTtnAQ" name="Relational"/>
+    <routinesParameter id="_jigxV6uOEeGBNrIDUTtnAQ" name="StringHandling"/>
+    <routinesParameter id="_jiqiU6uOEeGBNrIDUTtnAQ" name="TalendDataGenerator"/>
+    <routinesParameter id="_jiqiV6uOEeGBNrIDUTtnAQ" name="TalendDate"/>
+    <routinesParameter id="_jizsQKuOEeGBNrIDUTtnAQ" name="TalendString"/>
+    <routinesParameter id="_dJQfsEC8EeK3w7zn46sARA" name="SQLike"/>
+  </parameters>
+  <node componentName="tMysqlInput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="32" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMysqlInput_2"/>
+    <elementParameter field="CHECK" name="START" value="true"/>
+    <elementParameter field="CHECK" name="END_OF_FLOW" value="false"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_uI0MMKuPEeGBNrIDUTtnAQ"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="MYSQL_5"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value=""/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;rds-mgbi-prd001.ctk6yxrtub6x.us-west-2.rds.amazonaws.com&quot;"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;3306&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;mogodb01&quot;"/>
+    <elementParameter field="TEXT" name="TYPE" value="MYSQL"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;mogodbusr01&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="L3PzVAW+6FPNfOWA9YklHw==Encrypt"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;&quot;"/>
+    <elementParameter field="QUERYSTORE_TYPE" name="QUERYSTORE" value="&quot;&quot;"/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:REPOSITORY_QUERYSTORE_TYPE" value=""/>
+    <elementParameter field="TECHNICAL" name="QUERYSTORE:QUERYSTORE_TYPE" value="BUILT_IN"/>
+    <elementParameter field="GUESS_SCHEMA" name="GUESS_SCHEMA" value="&quot;&quot;"/>
+    <elementParameter field="MEMO_SQL" name="QUERY" value="&quot;select Business_Unit, Product,  Region,Province, Store&#xD;&#xA;,'Gross Churn Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, sum(if(Metric = 'Paid Off Proj', Value_Cust, 0)) &#xD;&#xA;+ sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0)) &#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Region &lt;> ' '&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by Business_Unit, Product, Region, Province, Store, Dateref&#xD;&#xA;&#xD;&#xA;/* Gross Churn Pct by Product = Gross Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select Business_Unit, Product, ' ' as Region, ' ' as Province,' ' as Store&#xD;&#xA;,'Gross Churn Pct Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Business_Unit &lt;> ' '&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by Business_Unit, Product,  Dateref&#xD;&#xA;&#xD;&#xA;/* Gross Churn Pct Pocket Zip = Gross Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select ' ' as Business_Unit, ' ' as Product, ' ' as Region,' ' as Province, ' ' as Store&#xD;&#xA;,'Gross Churn Pct Pocket Zip Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Product in ('Zip','Pocket Money')&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by  Dateref&#xD;&#xA;&#xD;&#xA;/* Gross Churn Pct Mini = Gross Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select ' ' as Business_Unit, ' ' as Product, ' ' as Region, ' ' as Province,' ' as Store&#xD;&#xA;,'Gross Churn Pct Mini Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Product in ('Mini Money')&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by  Dateref&#xD;&#xA;&#xD;&#xA;&#xD;&#xA;/* Net Churn = Paid Off + Default (Principal) - Reactivated */&#xD;&#xA;union all&#xD;&#xA;select Business_Unit, Product,  Region,Province, Store&#xD;&#xA;/* select Business_Unit, Product, ' ' as Region,' ' as Province, ' ' as Store */&#xD;&#xA;,'Net Churn Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, sum(if(Metric = 'Paid Off Proj', Value_Cust, 0)) &#xD;&#xA;+ sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0)) &#xD;&#xA;- sum(if(Metric = 'Reactivated Proj', Value_Cust, 0)) &#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;/* where Business_Unit &lt;> ' ' &#xD;&#xA;group by Business_Unit, Product,  Dateref */&#xD;&#xA;where Region &lt;> ' '&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by Business_Unit, Product, Region, Province, Store, Dateref&#xD;&#xA;&#xD;&#xA;/* Net Churn Pct by Product = Net Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select Business_Unit, Product, ' ' as Region, ' ' as Province,' ' as Store&#xD;&#xA;,'Net Churn Pct Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0))) &#xD;&#xA;- ( sum(if(Metric = 'Reactivated', Value_Cust, 0)) + sum(if(Metric = 'Reactivated Proj',&#xA;  Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Business_Unit &lt;> ' '&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by Business_Unit, Product,  Dateref&#xD;&#xA;&#xD;&#xA;/* Net Churn Pct Pocket Zip = Net Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select ' ' as Business_Unit, ' ' as Product, ' ' as Region,' ' as Province, ' ' as Store&#xD;&#xA;,'Net Churn Pct Pocket Zip Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0))) &#xD;&#xA;- ( sum(if(Metric = 'Reactivated', Value_Cust, 0)) + sum(if(Metric = 'Reactivated Proj',&#xA;  Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Product in ('Zip','Pocket Money')&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by   Dateref&#xD;&#xA;&#xD;&#xA;/* Net Churn Pct Mini = Net Churn / Active BOM */&#xD;&#xA;union all&#xD;&#xA;select ' ' as Business_Unit, ' ' as Product, ' ' as Region, ' ' as Province,' ' as Store&#xD;&#xA;,'Net Churn Pct Mini Proj' as Metric&#xD;&#xA;,Dateref&#xD;&#xA;, ((sum(if(Metric = 'Paid Off', Value_Cust, 0)) + sum(if(Metric = 'Paid Off Proj', Value_Cust,&#xA;  0)))&#xD;&#xA;+ (sum(if(Metric = 'Default (Principal)', Value_Cust,&#xA;  0)) + sum(if(Metric = 'Default (Principal) Proj', Value_Cust, 0))) &#xD;&#xA;- ( sum(if(Metric = 'Reactivated', Value_Cust, 0)) + sum(if(Metric = 'Reactivated Proj',&#xA;  Value_Cust, 0)))&#xD;&#xA;- sum(if(Metric = 'Active EOM Delta Proj', Value_Cust, 0)))/&#xD;&#xA;sum(if(Metric  = 'Active BOM', Value_Cust, 0)) as Value_Cust&#xD;&#xA;, null as Value_Loan&#xD;&#xA;from Sum_TDC_Loan_Cat_Monthly l1&#xD;&#xA;where Product in ('Mini Money')&#xD;&#xA;and Dateref = date_format(current_date(),'%Y-%m-01')&#xD;&#xA;group by   Dateref&quot;"/>
+    <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" value="mysql_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;noDatetimeStringSync=true&amp;allowMultiQueries=true&quot;"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="CHECK" name="ENABLE_STREAM" value="false"/>
+    <elementParameter field="CHECK" name="TRIM_ALL_COLUMN" value="false"/>
+    <elementParameter field="TABLE" name="TRIM_COLUMN">
+      <elementValue elementRef="SCHEMA_COLUMN" value="Business_Unit"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Product"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Region"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Province"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Store"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Metric"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Dateref"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Value_Cust"/>
+      <elementValue elementRef="TRIM" value="false"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Value_Loan"/>
+      <elementValue elementRef="TRIM" value="false"/>
+    </elementParameter>
+    <elementParameter field="TEXT" name="LABEL" value="mogodb01"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value=""/>
+    <elementParameter field="CHECK" name="VALIDATION_RULES" value="false"/>
+    <metadata connector="FLOW" name="tMysqlInput_2">
+      <column comment="" key="true" length="20" name="Business_Unit" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Product" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Region" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Province" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Store" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="16" name="Metric" nullable="false" pattern="" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="10" name="Dateref" nullable="false" pattern="" precision="0" sourceType="" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="11" name="Value_Cust" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+      <column comment="" key="false" length="11" name="Value_Loan" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <node componentName="tMysqlOutput" componentVersion="0.102" offsetLabelX="0" offsetLabelY="0" posX="320" posY="96">
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMysqlOutput_1"/>
+    <elementParameter field="CHECK" name="END_OF_FLOW" value="true"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:PROPERTY_TYPE" value="REPOSITORY"/>
+    <elementParameter field="TECHNICAL" name="PROPERTY:REPOSITORY_PROPERTY_TYPE" value="_uI0MMKuPEeGBNrIDUTtnAQ"/>
+    <elementParameter field="CLOSED_LIST" name="DB_VERSION" value="MYSQL_5"/>
+    <elementParameter field="CHECK" name="USE_EXISTING_CONNECTION" value="false"/>
+    <elementParameter field="COMPONENT_LIST" name="CONNECTION" value=""/>
+    <elementParameter field="TEXT" name="TYPE" value="MYSQL"/>
+    <elementParameter field="TEXT" name="HOST" value="&quot;rds-mgbi-prd001.ctk6yxrtub6x.us-west-2.rds.amazonaws.com&quot;"/>
+    <elementParameter field="TEXT" name="PORT" value="&quot;3306&quot;"/>
+    <elementParameter field="TEXT" name="DBNAME" value="&quot;mogodb01&quot;"/>
+    <elementParameter field="TEXT" name="USER" value="&quot;mogodbusr01&quot;"/>
+    <elementParameter field="PASSWORD" name="PASS" value="L3PzVAW+6FPNfOWA9YklHw==Encrypt"/>
+    <elementParameter field="DBTABLE" name="TABLE" value="&quot;Sum_TDC_Loan_Cat_Monthly&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="TABLE_ACTION" value="CREATE_IF_NOT_EXISTS"/>
+    <elementParameter field="CLOSED_LIST" name="DATA_ACTION" value="INSERT_OR_UPDATE"/>
+    <elementParameter field="LABEL" name="NOTE" value="This option only applies when deploying and running in the Talend Runtime"/>
+    <elementParameter field="CHECK" name="SPECIFY_DATASOURCE_ALIAS" value="false"/>
+    <elementParameter field="TEXT" name="DATASOURCE_ALIAS" value="&quot;&quot;"/>
+    <elementParameter field="CHECK" name="DIE_ON_ERROR" value="false"/>
+    <elementParameter field="MAPPING_TYPE" name="MAPPING" value="mysql_id"/>
+    <elementParameter field="TEXT" name="PROPERTIES" value="&quot;noDatetimeStringSync=true&amp;allowMultiQueries=true&quot;"/>
+    <elementParameter field="CHECK" name="EXTENDINSERT" value="true"/>
+    <elementParameter field="LABEL" name="NOTE" value="(Not compatible with reject links)"/>
+    <elementParameter field="TEXT" name="NB_ROWS_PER_INSERT" value="100"/>
+    <elementParameter field="CHECK" name="USE_BATCH_SIZE" value="true"/>
+    <elementParameter field="TEXT" name="BATCH_SIZE" value="10000"/>
+    <elementParameter field="ENCODING_TYPE" name="ENCODING" value="&quot;ISO-8859-15&quot;"/>
+    <elementParameter field="TECHNICAL" name="ENCODING:ENCODING_TYPE" value="ISO-8859-15"/>
+    <elementParameter field="TEXT" name="COMMIT_EVERY" value="10000"/>
+    <elementParameter field="TABLE" name="ADD_COLS"/>
+    <elementParameter field="CHECK" name="USE_FIELD_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="FIELD_OPTIONS">
+      <elementValue elementRef="SCHEMA_COLUMN" value="Business_Unit"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Product"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Region"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Province"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Store"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Metric"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Dateref"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Value_Cust"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+      <elementValue elementRef="SCHEMA_COLUMN" value="Value_Loan"/>
+      <elementValue elementRef="UPDATE_KEY" value="false"/>
+      <elementValue elementRef="DELETE_KEY" value="false"/>
+      <elementValue elementRef="UPDATABLE" value="true"/>
+      <elementValue elementRef="INSERTABLE" value="true"/>
+    </elementParameter>
+    <elementParameter field="CHECK" name="USE_HINT_OPTIONS" value="false"/>
+    <elementParameter field="TABLE" name="HINT_OPTIONS"/>
+    <elementParameter field="CHECK" name="ENABLE_DEBUG_MODE" value="false"/>
+    <elementParameter field="CHECK" name="ON_DUPLICATE_KEY_UPDATE" value="false"/>
+    <elementParameter field="TABLE" name="DUPLICATED_KEYS"/>
+    <elementParameter field="CHECK" name="SUPPORT_NULL_WHERE" value="false"/>
+    <elementParameter field="TEXT" name="LABEL" value="mogodb01"/>
+    <elementParameter field="TEXT" name="CONNECTION_FORMAT" value="row"/>
+    <elementParameter field="CHECK" name="INFORMATION" value="false"/>
+    <elementParameter field="MEMO" name="COMMENT" value=""/>
+    <elementParameter field="CHECK" name="VALIDATION_RULES" value="false"/>
+    <metadata connector="FLOW" name="tMysqlOutput_1">
+      <column comment="" key="true" length="20" name="Business_Unit" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Product" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Region" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Province" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Store" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="16" name="Metric" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="10" name="Dateref" nullable="false" pattern="" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="11" name="Value_Cust" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+      <column comment="" key="false" length="11" name="Value_Loan" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+    </metadata>
+    <metadata connector="REJECT" name="REJECT">
+      <column comment="" key="true" length="20" name="Business_Unit" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Product" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Region" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="5" name="Province" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="50" name="Store" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="16" name="Metric" nullable="false" pattern="" precision="0" sourceType="VARCHAR" type="id_String" usefulColumn="true"/>
+      <column comment="" key="true" length="10" name="Dateref" nullable="false" pattern="" precision="0" sourceType="DATETIME" type="id_Date" usefulColumn="true"/>
+      <column comment="" defaultValue="" key="false" length="11" name="Value_Cust" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+      <column comment="" key="false" length="11" name="Value_Loan" nullable="true" pattern="" precision="3" sourceType="DECIMAL" type="id_BigDecimal" originalLength="11" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorCode" nullable="true" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+      <column defaultValue="" key="false" length="255" name="errorMessage" nullable="true" precision="0" sourceType="" type="id_String" usefulColumn="true"/>
+    </metadata>
+  </node>
+  <connection connectorName="FLOW" label="row1" lineStyle="0" metaname="tMysqlInput_2" offsetLabelX="0" offsetLabelY="0" source="tMysqlInput_2" target="tMysqlOutput_1">
+    <elementParameter field="CHECK" name="TRACES_CONNECTION_ENABLE" value="true"/>
+    <elementParameter field="TABLE" name="TRACES_CONNECTION_FILTER"/>
+    <elementParameter field="CHECK" name="MONITOR_CONNECTION" value="false"/>
+    <elementParameter field="CHECK" name="USEROWLABEL" value="true"/>
+    <elementParameter field="TEXT" name="METTERLABEL" value="&quot;MyLabel&quot;"/>
+    <elementParameter field="CLOSED_LIST" name="ABSOLUTE" value="Absolute"/>
+    <elementParameter field="CONNECTION_LIST" name="CONNECTIONS" value=""/>
+    <elementParameter field="TABLE" name="THRESHLODS"/>
+    <elementParameter field="RADIO" name="PARTITIONER" value="false"/>
+    <elementParameter field="RADIO" name="DEPARTITIONER" value="false"/>
+    <elementParameter field="RADIO" name="REPARTITIONER" value="false"/>
+    <elementParameter field="RADIO" name="NONE" value="true"/>
+    <elementParameter field="TEXT" name="NUM_PARTITIONS" value="5"/>
+    <elementParameter field="TEXT" name="PART_QUEUE_SIZE" value="1000"/>
+    <elementParameter field="CHECK" name="HASH_PARTITION" value="false"/>
+    <elementParameter field="TABLE" name="HASH_KEYS"/>
+    <elementParameter field="TEXT" name="DEPART_QUEUE_SIZE" value="1000"/>
+    <elementParameter field="CHECK" name="IS_SORTING" value="true"/>
+    <elementParameter field="CHECK" name="ACTIVATE" value="true"/>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="row1"/>
+    <elementParameter field="CHECK" name="RESUMING_CHECKPOINT" value="false"/>
+    <elementParameter field="TEXT" name="RESUMLABEL" value=""/>
+    <elementParameter field="MEMO" name="FAILURE_INSTRUCTIONS" value=""/>
+    <elementParameter field="CHECK" name="ACTIVEBREAKPOINT" value="false"/>
+    <elementParameter field="CLOSED_LIST" name="LOGICAL_OP" value="&amp;&amp;"/>
+    <elementParameter field="TABLE" name="CONDITIONS"/>
+    <elementParameter field="CHECK" name="USE_ADVANCED" value="false"/>
+    <elementParameter field="MEMO_JAVA" name="ADVANCED_COND" value="// code sample : use input_row to define the condition.&#xA;// input_row.columnName1.equals(&quot;foo&quot;) ||!(input_row.columnName2.equals(&quot;bar&quot;))&#xA;// replace the following expression by your own filter condition &#xA;input_row.columnName1.equals(input_row.columnName2)&#xA;&#x9;&#x9;&#x9;"/>
+  </connection>
+  <subjob>
+    <elementParameter field="TEXT" name="UNIQUE_NAME" value="tMysqlInput_2"/>
+    <elementParameter field="COLOR" name="SUBJOB_TITLE_COLOR" value="160;190;240"/>
+    <elementParameter field="COLOR" name="SUBJOB_COLOR" value="220;220;250"/>
+  </subjob>
+</talendfile:ProcessType>
