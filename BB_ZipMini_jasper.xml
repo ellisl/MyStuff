@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
-<!-- 2015-11-12T18:04:30 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BB_Data_Tapes" pageWidth="2000" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a465670-cc4a-4270-965f-8efb86e33b71">
+<!-- 2015-11-12T17:40:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BB_Data_Tapes" pageWidth="2088" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="2048" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8a465670-cc4a-4270-965f-8efb86e33b71">
 	<property name="template.engine" value="tabular_template"/>
 	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="true"/>
 	<property name="net.sf.jasperreports.page.break.no.pagination" value="apply"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mogodb03"/>
 	<property name="ireport.jasperserver.url" value="https://analytics.mogo.ca/jasperserver-pro/"/>
 	<property name="ireport.jasperserver.user" value="ellisl|mogo"/>
-	<property name="ireport.jasperserver.report.resource" value="/Mogo/Finance/BB_Tapes_TEST_files/MainJrxml"/>
+	<property name="ireport.jasperserver.report.resource" value="/Environments/Development/Ellis/BB_Tapes_TEST_files/MainJrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/Environments/Development/Ellis/BB_Tapes_TEST"/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
 	<style name="Table" fontName="Calibri">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -58,283 +51,80 @@
 	<parameter name="CurrFundDate" class="java.util.Date"/>
 	<parameter name="PrevFundDate" class="java.util.Date"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT 'Existing Data Tape' as Group_Tape 
-,RefMon
-,`Loan ID`
-,`First Name`
-,`Last Name`
-,`Borrower Name`
-,`Date of Birth`
-,`Address`
-,`City`
-,`Zip Code`
-,`Province`
-,`Business_Unit`
-,`Product Type`
-,`Store Name`
-,`Merchant_Store_ID`
-,`Date of Loan`
-,`Insurance_Flag`
-,`Original Term (Days)`
-,`Original Rate`
-,`Loan_Amount`
-,`Finance_Charge`
-,`Fee_Charge`
-,`Principal_Paid`
-,`FinCharge_Paid`
-,`FeeCharge_Paid`
-,`Total Amount Paid`
-,`Cumulative Principal_Paid`
-,`Cumulative FinCharge_Paid`
-,`Cumulative FeeCharge_Paid`
-,`Current Principal Balance`
-,`Interest_Balance`
-,`Fee_Balance`
-,`Current Total Balance`
-,`LastPmtDate`
-,`Days since last payment`
-,`Days Delinquent`
-,`Delinquency Status`
-,cast(case when `Bureau Score` = 'NA' then 0 else `Bureau Score` end as signed) as `Bureau Score`
-,`Loan_Type`
-,`Cust_Tenure (Months)`
-,`FL_BKY`
-,`FL_Eligibility`
-,`FL_NotInNew`
-,`Type 1 Delinquency`
-,`Type 2 Delinquency`
-,`Type 3 Delinquency`
-,`Meets all qualitative Eligibility Criteria`
-,`Less than max UPB at Origination`
-,`Meets Minimum Interest Payments`
-,`Eligible Loan Type`
-,`Eligible`
-,`Eligible Receivable Balance`
-,`Eligible Receivable Balance (w/Score)`
-
+		<![CDATA[SELECT *
+,'Existing Data Tape' as Group_Tape 
 FROM mogodb03.FortressBB_Hist
-WHERE RefMon =  $P{CurrFundDate} 
-AND `Product Type` NOT IN ('Pocket Money', 'Zip Advance')
-AND `Loan Id`  IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMon = $P{PrevFundDate})
-
+WHERE RefMon =     $P{CurrFundDate} 
+AND Product_Type NOT IN ('Pocket Money', 'Zip 30')
+AND Loan_ID  IN (
+	SELECT Loan_ID FROM mogodb03.FortressBB_Hist WHERE RefMon =   $P{PrevFundDate} 
+)
 
 UNION
 
-SELECT 'New Data Tape' as Group_Tape 
-,RefMon
-,`Loan ID`
-,`First Name`
-,`Last Name`
-,`Borrower Name`
-,`Date of Birth`
-,`Address`
-,`City`
-,`Zip Code`
-,`Province`
-,`Business_Unit`
-,`Product Type`
-,`Store Name`
-,`Merchant_Store_ID`
-,`Date of Loan`
-,`Insurance_Flag`
-,`Original Term (Days)`
-,`Original Rate`
-,`Loan_Amount`
-,`Finance_Charge`
-,`Fee_Charge`
-,`Principal_Paid`
-,`FinCharge_Paid`
-,`FeeCharge_Paid`
-,`Total Amount Paid`
-,`Cumulative Principal_Paid`
-,`Cumulative FinCharge_Paid`
-,`Cumulative FeeCharge_Paid`
-,`Current Principal Balance`
-,`Interest_Balance`
-,`Fee_Balance`
-,`Current Total Balance`
-,`LastPmtDate`
-,`Days since last payment`
-,`Days Delinquent`
-,`Delinquency Status`
-,cast(case when `Bureau Score` = 'NA' then 0 else `Bureau Score` end as signed) as `Bureau Score`
-,`Loan_Type`
-,`Cust_Tenure (Months)`
-,`FL_BKY`
-,`FL_Eligibility`
-,`FL_NotInNew`
-,`Type 1 Delinquency`
-,`Type 2 Delinquency`
-,`Type 3 Delinquency`
-,`Meets all qualitative Eligibility Criteria`
-,`Less than max UPB at Origination`
-,`Meets Minimum Interest Payments`
-,`Eligible Loan Type`
-,`Eligible`
-,`Eligible Receivable Balance`
-,`Eligible Receivable Balance (w/Score)`
-
+SELECT *
+	,'New Data Tape' as Group_Tape 
 FROM mogodb03.FortressBB_Hist
-WHERE RefMon =  $P{CurrFundDate} 
-AND `Product Type` NOT IN ('Pocket Money', 'Zip Advance')
-AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMon = $P{PrevFundDate})]]>
+WHERE RefMon =   $P{CurrFundDate} 
+AND Product_Type NOT IN ('Pocket Money', 'Zip 30')
+AND Loan_ID NOT IN (
+	SELECT Loan_ID FROM mogodb03.FortressBB_Hist WHERE RefMon =  $P{PrevFundDate}
+)]]>
 	</queryString>
-	<field name="RefMon" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Loan ID" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="First Name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Last Name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Borrower Name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Date of Birth" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Address" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="City" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Zip Code" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Province" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Business_Unit" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Product Type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Store Name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Merchant_Store_ID" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Date of Loan" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Insurance_Flag" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Original Term (Days)" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Original Rate" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Loan_Amount" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Finance_Charge" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Fee_Charge" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Principal_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FinCharge_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FeeCharge_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Total Amount Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Cumulative Principal_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Cumulative FinCharge_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Cumulative FeeCharge_Paid" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Current Principal Balance" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Interest_Balance" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Fee_Balance" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Current Total Balance" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="LastPmtDate" class="java.sql.Date">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Days since last payment" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Days Delinquent" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Delinquency Status" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Bureau Score" class="java.lang.Long">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Loan_Type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Cust_Tenure (Months)" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FL_BKY" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FL_Eligibility" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="FL_NotInNew" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Type 1 Delinquency" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Type 2 Delinquency" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Type 3 Delinquency" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Meets all qualitative Eligibility Criteria" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Less than max UPB at Origination" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Meets Minimum Interest Payments" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Eligible Loan Type" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Eligible" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Eligible Receivable Balance" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="Eligible Receivable Balance (w/Score)" class="java.math.BigDecimal">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="RefMon" class="java.sql.Date"/>
+	<field name="Loan_ID" class="java.math.BigDecimal"/>
+	<field name="First_Name" class="java.lang.String"/>
+	<field name="Last_Name" class="java.lang.String"/>
+	<field name="Borrower_Name" class="java.lang.String"/>
+	<field name="Date_of_Birth" class="java.sql.Date"/>
+	<field name="Address" class="java.lang.String"/>
+	<field name="City" class="java.lang.String"/>
+	<field name="Zip_Code" class="java.lang.String"/>
+	<field name="Province" class="java.lang.String"/>
+	<field name="Business_Unit" class="java.lang.String"/>
+	<field name="Product_Type" class="java.lang.String"/>
+	<field name="Store_Name" class="java.lang.String"/>
+	<field name="Merchant_Store_ID" class="java.lang.String"/>
+	<field name="Date_of_Loan" class="java.sql.Timestamp"/>
+	<field name="Insurance_Flag" class="java.lang.Long"/>
+	<field name="Original_Term_Days" class="java.lang.Integer"/>
+	<field name="Original_Rate" class="java.math.BigDecimal"/>
+	<field name="Loan_Amount" class="java.math.BigDecimal"/>
+	<field name="Finance_Charge" class="java.math.BigDecimal"/>
+	<field name="Fee_Charge" class="java.math.BigDecimal"/>
+	<field name="Principal_Paid" class="java.math.BigDecimal"/>
+	<field name="FinCharge_Paid" class="java.math.BigDecimal"/>
+	<field name="FeeCharge_Paid" class="java.math.BigDecimal"/>
+	<field name="Total_Amount_Paid" class="java.math.BigDecimal"/>
+	<field name="Cumulative_Principal_Paid" class="java.math.BigDecimal"/>
+	<field name="Cumulative_FinCharge_Paid" class="java.math.BigDecimal"/>
+	<field name="Cumulative_FeeCharge_Paid" class="java.math.BigDecimal"/>
+	<field name="Current_Principal_Balance" class="java.math.BigDecimal"/>
+	<field name="Interest_Balance" class="java.math.BigDecimal"/>
+	<field name="Fee_Balance" class="java.math.BigDecimal"/>
+	<field name="Current_Total_Balance" class="java.math.BigDecimal"/>
+	<field name="LastPmtDate" class="java.sql.Date"/>
+	<field name="Days_Since_Last_Payment" class="java.lang.Integer"/>
+	<field name="Days_Delinquent" class="java.lang.Integer"/>
+	<field name="Delinquency_Status" class="java.lang.String"/>
+	<field name="Bureau_Score" class="java.lang.String"/>
+	<field name="Loan_Type" class="java.lang.String"/>
+	<field name="Cust_Tenure_Months" class="java.math.BigDecimal"/>
+	<field name="FL_BKY" class="java.lang.Integer"/>
+	<field name="FL_Eligibility" class="java.lang.Integer"/>
+	<field name="FL_NotInNew" class="java.lang.Integer"/>
+	<field name="Type_1_Delinquency" class="java.lang.String"/>
+	<field name="Type_2_Delinquency" class="java.lang.String"/>
+	<field name="Type_3_Delinquency" class="java.lang.String"/>
+	<field name="Meets_All_Qualitative_Eligibility_Criteria" class="java.lang.String"/>
+	<field name="Less_Than_Max_UPB_At_Origination" class="java.lang.String"/>
+	<field name="Meets_Minimum_Interest_Payments" class="java.lang.String"/>
+	<field name="Eligible_Loan_Type" class="java.lang.String"/>
+	<field name="Eligible" class="java.lang.String"/>
+	<field name="Eligible_Receivable_Balance" class="java.math.BigDecimal"/>
+	<field name="Eligible_Receivable_Balance_With_Score" class="java.math.BigDecimal"/>
+	<field name="Product" class="java.lang.String"/>
+	<field name="Aging_Tenure_DLQ_Category" class="java.lang.String"/>
 	<field name="Group_Tape" class="java.lang.String"/>
 	<group name="Group1" keepTogether="true">
 		<groupExpression><![CDATA[$F{Group_Tape}]]></groupExpression>
@@ -367,7 +157,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Store Name"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Store_Name"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="73" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="cde71e2a-56d4-4ca9-8fe7-7b52aa9ea929"/>
@@ -376,7 +166,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Loan ID"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Loan_ID"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="110" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e9f09916-2600-493f-9b82-299c1a51fc8b"/>
@@ -385,7 +175,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["First Name"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["First_Name"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="147" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="cb064d53-9f30-4ee4-8d13-6aae9c760184"/>
@@ -394,7 +184,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Last Name"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Last_Name"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="184" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="aba46689-4b75-4da7-9361-120094a80ef9"/>
@@ -403,7 +193,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Borrower Name"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Borrower_Name"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="221" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="22401ce3-2192-40b1-9fba-6e58c040c3cd"/>
@@ -412,7 +202,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Date of Birth"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Date_of_Birth"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="258" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="366bbb70-9ae0-4a10-8adc-f18afe61ce9f"/>
@@ -439,7 +229,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Zip Code"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Zip_Code"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="369" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="054f23c9-5215-4d80-bbb3-923dc4204e43"/>
@@ -466,7 +256,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Product Type"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Product_Type"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="554" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="57396592-d712-4f78-b692-52c7df6116ea"/>
@@ -475,7 +265,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Date of Loan"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Date_of_Loan"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="591" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="a667293c-23cb-4502-8552-c41cdc3a5adb"/>
@@ -502,7 +292,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Original Rate"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Original_Rate"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="702" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="4ae5feb3-9343-4396-a13b-c154e4a2e45d"/>
@@ -565,7 +355,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Total Amount Paid"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Total_Amount_Paid"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="961" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="24f549bd-59a1-4349-a423-c47a9d128c45"/>
@@ -574,7 +364,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Cumulative Principal_Paid"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Cumulative_Principal_Paid"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="998" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="20ff3101-45a4-46ae-a0b9-eaaffa952665"/>
@@ -583,7 +373,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Cumulative FinCharge_Paid"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Cumulative_FinCharge_Paid"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1035" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="50429aab-648a-497a-93db-23de4e6642ab"/>
@@ -592,7 +382,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Cumulative FeeCharge_Paid"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Cumulative_FeeCharge_Paid"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1072" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="b8f4e0fa-2d28-419f-b724-83bffd71c3f4"/>
@@ -601,7 +391,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Current Principal Balance"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Current_Principal_Balance"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1109" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="95767d39-a7b3-4350-936a-cb245b8f6d96"/>
@@ -628,7 +418,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Current Total Balance"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Current_Total_Balance"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1220" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d3c9a0ec-34cc-427b-9bea-3660b9175b51"/>
@@ -646,7 +436,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Days since last payment"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Days_Since_Last_Payment"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1294" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="f662a6ff-1752-4260-b52f-7680f56012bc"/>
@@ -655,7 +445,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Days Delinquent"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Days_Delinquent"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1331" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e2f2609b-0393-4c65-bd16-708c7bf2c90a"/>
@@ -664,7 +454,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Delinquency Status"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Delinquency_Status"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1368" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="462d22d1-4d8c-4b21-9d27-f19eed9b27ce"/>
@@ -673,7 +463,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Bureau Score"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Bureau_Score"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1405" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="86cf882d-f70c-4629-a06e-8068200c828b"/>
@@ -691,7 +481,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Cust_Tenure (Months)"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Cust_Tenure_Months"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1479" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="154ca21d-49d7-4094-8dfa-85f7b13faac7"/>
@@ -727,7 +517,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Type 1 Delinquency"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Type_1_Delinquency"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1627" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="04770f10-776c-40c3-9d58-aec9f77f2c79"/>
@@ -736,7 +526,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Type 2 Delinquency"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Type_2_Delinquency"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1664" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="efdd2d9c-cfd4-4c2b-bcd4-99339881ce96"/>
@@ -745,7 +535,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Type 3 Delinquency"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Type_3_Delinquency"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1701" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="225511cc-e402-437a-a338-83d322c68464"/>
@@ -754,7 +544,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Meets all qualitative Eligibility Criteria"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Meets_All_Qualitative_Eligibility_Criteria"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1738" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5eec0bc2-925f-42b7-8aef-620e598bcec0"/>
@@ -763,7 +553,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Less than max UPB at Origination"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Less_Than_Max_UPB_At_Origination"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1775" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="b2fdc93a-5809-41d6-9404-c581696a28f7"/>
@@ -772,7 +562,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Meets Minimum Interest Payments"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Meets_Minimum_Interest_Payments"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1812" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="f8d6c5d3-39ca-462c-842e-fabd245c6b49"/>
@@ -781,7 +571,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Eligible Loan Type"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Eligible_Loan_Type"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1849" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="aa8914c5-7c97-4d3d-9d02-c32f85724782"/>
@@ -799,7 +589,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Eligible Receivable Balance"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Eligible_Receivable_Balance"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement mode="Transparent" x="1923" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="4445e105-7b51-4f07-8b48-e0e71ca31be6"/>
@@ -808,7 +598,16 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Eligible Receivable Balance (w/Score)"]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Eligible_Receivable_Balance_With_Score)"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement mode="Transparent" x="1960" y="0" width="37" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="5ffb995b-8d71-4a8f-b8c5-8240ce188431"/>
+					<box padding="0" topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="Calibri" size="9" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single" lineSpacingSize="1.0" firstLineIndent="0" leftIndent="0" rightIndent="0" spacingBefore="0" spacingAfter="0" tabStopWidth="40"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Aging_Tenure_DLQ_Category"]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -826,7 +625,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 	</group>
 	<detail>
 		<band height="15">
-			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="0" y="0" width="73" height="15" uuid="ae71699b-f6b7-4bb3-9e0a-add303a0bb52">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -835,7 +634,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[DATEFORMAT($F{RefMon},"dd/MM/yyyy")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{RefMon},"yyyy-MM-dd")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="73" y="0" width="37" height="15" uuid="08e1293e-4b63-4f81-b6e7-160f1b0d289b">
@@ -844,7 +643,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Loan ID}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Loan_ID}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="110" y="0" width="37" height="15" uuid="b0732076-0ec5-4eba-9d9e-23f4d5b90ed4">
@@ -853,7 +652,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{First Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{First_Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="147" y="0" width="37" height="15" uuid="f3886cdc-59a8-46c0-a5fd-5728ec2d7440">
@@ -862,7 +661,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Last Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Last_Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="184" y="0" width="37" height="15" uuid="d45ff3b3-ca22-4985-89b6-9a74e0554568">
@@ -871,7 +670,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Borrower Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Borrower_Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="221" y="0" width="37" height="15" uuid="2383259f-2f3c-4dd8-b27a-b5e531426d84">
@@ -880,7 +679,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[DATEFORMAT($F{Date of Birth},"dd/MM/yyyy")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{Date_of_Birth},"yyyy-MM-dd")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="258" y="0" width="37" height="15" uuid="45f9ef67-3a24-4778-8be0-d13736cb644a">
@@ -907,7 +706,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Zip Code}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Zip_Code}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="369" y="0" width="37" height="15" uuid="e2cf8576-667a-4139-afb1-4d46714bd213">
@@ -934,7 +733,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Product Type}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Product_Type}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="480" y="0" width="37" height="15" uuid="6ba8087a-8a8b-4d7a-834a-59f1bfb2bb43">
@@ -943,7 +742,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Store Name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Store_Name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="517" y="0" width="37" height="15" uuid="84d6139a-64b4-46ae-a965-bbc2cd716200">
@@ -954,14 +753,14 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Merchant_Store_ID}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" pattern="yyyy-MM-dd hh:mm:ss">
 				<reportElement x="554" y="0" width="37" height="15" uuid="cbd821bb-7381-4088-b707-c576c2092bb7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Date of Loan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{Date_of_Loan},"yyyy-MM-dd")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="591" y="0" width="37" height="15" uuid="b63937d6-3f6e-41ae-809b-c061e2717d76">
@@ -979,7 +778,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Original Term (Days)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Original_Term_Days}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="665" y="0" width="37" height="15" uuid="84eb104c-672b-46fd-a07e-21ce5a8c24af">
@@ -988,7 +787,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Original Rate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Original_Rate}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="702" y="0" width="37" height="15" uuid="52db2151-29a5-4c19-bd2a-fc247630492a">
@@ -1051,7 +850,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Total Amount Paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Total_Amount_Paid}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="961" y="0" width="37" height="15" uuid="466da469-3245-44ad-86a9-f792d8609c9f">
@@ -1060,7 +859,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Cumulative Principal_Paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cumulative_Principal_Paid}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="998" y="0" width="37" height="15" uuid="efd16a6e-1845-4912-bd5f-c6c52d93156f">
@@ -1069,7 +868,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Cumulative FinCharge_Paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cumulative_FinCharge_Paid}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1035" y="0" width="37" height="15" uuid="eed50e49-b592-4bee-bde3-d69941ca84b3">
@@ -1078,7 +877,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Cumulative FeeCharge_Paid}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cumulative_FeeCharge_Paid}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1072" y="0" width="37" height="15" uuid="818d7b39-36b7-428a-91d0-31646250e592">
@@ -1087,7 +886,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Current Principal Balance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Current_Principal_Balance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1109" y="0" width="37" height="15" uuid="bb97cf84-2715-4c3b-bc0f-2dda2868e89d">
@@ -1115,7 +914,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Current Total Balance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Current_Total_Balance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1220" y="0" width="37" height="15" uuid="a8e75962-5f3a-4d14-a894-e1af043de413">
@@ -1124,7 +923,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{LastPmtDate}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[DATEFORMAT($F{LastPmtDate},"yyyy-MM-dd")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1257" y="0" width="37" height="15" uuid="eb81200e-ed9c-4531-9768-680f7776c118">
@@ -1133,7 +932,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Days since last payment}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days_Since_Last_Payment}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1294" y="0" width="37" height="15" uuid="644144d1-3949-47ac-84ec-7f91750ebd28">
@@ -1142,7 +941,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Days Delinquent}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Days_Delinquent}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1331" y="0" width="37" height="15" uuid="a1516b6f-0a86-4566-9ceb-4300c289abb6">
@@ -1151,7 +950,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Delinquency Status}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Delinquency_Status}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1368" y="0" width="37" height="15" uuid="ce18bcca-48eb-491d-9e66-1fdf0ceedb42">
@@ -1160,7 +959,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Bureau Score}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Bureau_Score}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1405" y="0" width="37" height="15" uuid="8041a63b-60e7-4d57-8375-64c8fc5a9966">
@@ -1178,7 +977,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Cust_Tenure (Months)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Cust_Tenure_Months}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1479" y="0" width="37" height="15" uuid="959b19f2-41e4-4f1c-902b-16c13d659734">
@@ -1214,7 +1013,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Type 1 Delinquency}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Type_1_Delinquency}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1627" y="0" width="37" height="15" uuid="ece193d5-aced-437c-bca1-58b59a5064f8">
@@ -1223,7 +1022,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Type 2 Delinquency}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Type_2_Delinquency}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1664" y="0" width="37" height="15" uuid="712e8f6e-1e76-409e-a532-da09ce42bba7">
@@ -1232,7 +1031,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Type 3 Delinquency}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Type_3_Delinquency}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1701" y="0" width="37" height="15" uuid="322287af-ddea-4ebd-a871-3f78dbfe9db6">
@@ -1241,7 +1040,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Meets all qualitative Eligibility Criteria}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Meets_All_Qualitative_Eligibility_Criteria}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1738" y="0" width="37" height="15" uuid="ecf8ce38-1e5f-4e2f-ae13-617eaa969991">
@@ -1250,7 +1049,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Less than max UPB at Origination}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Less_Than_Max_UPB_At_Origination}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1775" y="0" width="37" height="15" uuid="c17536f9-9809-4103-a548-6d119d5a4c31">
@@ -1259,7 +1058,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Meets Minimum Interest Payments}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Meets_Minimum_Interest_Payments}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1812" y="0" width="37" height="15" uuid="5269dee1-4d3e-4963-a316-cf090ffa66ee">
@@ -1268,7 +1067,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Eligible Loan Type}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Eligible_Loan_Type}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1849" y="0" width="37" height="15" uuid="dc628465-9ff8-4ade-bc86-f912022711fb">
@@ -1286,7 +1085,7 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Eligible Receivable Balance}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Eligible_Receivable_Balance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement x="1923" y="0" width="37" height="15" uuid="95d051aa-452e-4152-b664-346ebf55378d">
@@ -1295,7 +1094,16 @@ AND `Loan Id` NOT IN (SELECT `Loan Id` FROM mogodb03.FortressBB_Hist WHERE RefMo
 				<textElement>
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Eligible Receivable Balance (w/Score)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Eligible_Receivable_Balance_With_Score}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1960" y="0" width="37" height="15" uuid="4650eaa3-3181-4029-bf19-5e382606934e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Aging_Tenure_DLQ_Category}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
